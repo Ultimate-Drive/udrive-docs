@@ -153,7 +153,7 @@ Detect:
 
 
 sendinit:
-		ldx csx
+			ldx csx
     		lda #UDIOCmdNetOpen ; Open Command
     		jmp IOExecA ; rts performed by the called routine
 initer: 
@@ -164,7 +164,7 @@ initer:
 
 poll:
     		ldx csx
-		lda #$UDIOCmdNetPeek
+			lda #$UDIOCmdNetPeek
     		jsr IOExecA
     		lda UDIORData,x 
 			sta	len
@@ -220,12 +220,9 @@ send:
 	        lda bufaddr+1
 	        sta ptr+1
 	        jsr wrlng	; send the packet
-	        lda UDIOStatus,x	; read the result
-	        beq sendnoerr
-	        sec
-	        rts
-sendnoerr:
-            clc
+	        lda UDIOStatus,x
+			bmi .1
+			lsr	; CS if error, A = ERROR CODE ?
 exit:		rts
 GETMAC:
             ldy #0
@@ -233,7 +230,7 @@ GETMAC:
             lda UDIORData,X
             sta mac,y
             iny
-            cmp #$6
+            cpy #$6
             bne .1
             rts 
 
@@ -254,8 +251,7 @@ IOExec:
 wrtpg:      ldy #0
 wrtpg2:     lda (ptr),y    ; get a byte
             sta UDIOWData,x     ; send it to the Udrive
-	        iny	               ; increment to next byte
-	        dex                ; decrease countdown
+	        iny	               ; increment to next byte              
 	        bne	wrtpg2         ; keep copying while x > 0
 	        rts
 ;--------------------------------------------------------------------
@@ -291,7 +287,6 @@ rdpg:
             lda UDIORData,x         ; get the byte
 	        sta (ptr),y
 	        iny
-	        dex
 	        bne .1
 	        rts
 
