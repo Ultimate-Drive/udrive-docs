@@ -153,8 +153,7 @@ Detect:
 
 
 sendinit:
-			lda csx
-    		tax
+		ldx csx
     		lda #UDIOCmdNetOpen ; Open Command
     		jmp IOExecA ; rts performed by the called routine
 initer: 
@@ -164,9 +163,8 @@ initer:
 ;---------------------------------------------------------------------
 
 poll:
-    		lda csx
-    		tax
-			lda #$UDIOCmdNetPeek
+    		ldx csx
+		lda #$UDIOCmdNetPeek
     		jsr IOExecA
     		lda UDIORData,x 
 			sta	len
