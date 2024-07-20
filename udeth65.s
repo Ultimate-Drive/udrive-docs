@@ -117,95 +117,93 @@ ROMSIGL:		:= *-ROMSIG
 
 init:
 	; Convert slot number to slot I/O offset
-    Detect:		
-				lda #UDROMSignOfs
-				sta tpa
-                lda #$C7
-.1:				sta tpa+1
-				ldy #ROMSIGL-1
-.10:				lda (tpa),y
-				cmp ROMSIG,y
-				bne	.2
-				dey
-		bpl .10 ; Still matching RomSig
-		bra .3 ; Found if we reached the end, no mismatch
-.2:		lda tpa+1
-		dec
-		cmp #$C0
-		bne .1
-		lda #$21
-		sec
-.99		rts
+Detect:		
+			lda #UDROMSignOfs
+			sta tpa
+            lda #$C7
+.1:			sta tpa+1
+			ldy #ROMSIGL-1
+.10:		lda (tpa),y
+			cmp ROMSIG,y
+			bne	.2
+			dey
+			bpl .10 ; Still matching RomSig
+			bra .3 ; Found if we reached the end, no mismatch
+.2:			lda tpa+1
+			dec
+			cmp #$C0
+			bne .1
+			lda #$21 ; bad file
+			sec
+.99			rts
 *--------------------------------------
-.3		asl ; We found a Udrive Lets store the card slot
-                asl
-                asl
-                asl
-                sta csx ; ($C7 becomes $C|7 << 4 == $70)
-                tax ; We need the slot number in X  << 4;)
-*		jsr sendinit
-                beq .9
-                jsr GETMAC ; Store Mac Address in 'mac'
-.9		rts ; Wee... Init / Open is done! We are in MACRAW mode
-	
-
+.3			asl ; We found a Udrive Lets store the card slot
+            asl
+            asl
+            asl
+            sta csx ; ($C7 becomes $C|7 << 4 == $70)
+            tax ; We need the slot number in X  << 4;)
+*			jsr sendinit
+            beq .9
+            jmp GETMAC ; Store Mac Address in 'mac'
+.9			rts ; Wee... Init / Open is done! We are in MACRAW mode
 	.endif
 
 ;=====================================================================
 
 
 sendinit:
-		lda csx
+			lda csx
     		tax
-    		lda UDIOCmdNetOpen ; Open Command
+    		lda #UDIOCmdNetOpen ; Open Command
     		jmp IOExecA ; rts performed by the called routine
 initer: 
-		sec
-		rts
+			sec
+			rts
 
 ;---------------------------------------------------------------------
 
 poll:
     		lda csx
     		tax
-		lda #$UDIOCmdNetPeek
+			lda #$UDIOCmdNetPeek
     		jsr IOExecA
     		lda UDIORData,x 
-		sta	len
-		lda UDIORData,x 
+			sta	len
+			lda UDIORData,x 
     		sta len+1
-		lda len+1
-		bne ispacket
-		lda len
-		bne ispacket
+			lda len+1
+			bne ispacket
+			lda len
+			bne ispacket
 nopacket:
-		lda #$00	; register no packet
-		tax
-		sec
-		rts
+			lda #$00	; register no packet
+			tax
+			sec
+			rts
 
 ispacket:
 ; Is bufsize < length ?
-		lda bufsize
-		cmp len
-		lda bufsize+1
-		sbc len+1
-		bcc nopacket   ; this should not happen....
+			lda bufsize
+			cmp len
+			lda bufsize+1
+			sbc len+1
+			bcc nopacket   ; this should not happen....
 
 recvpacket:
-		lda bufaddr
-		sta ptr
+			lda bufaddr
+			sta ptr
     		sta UDIOMemPtrL,x
-		lda bufaddr+1
-		sta ptr+1
+			lda bufaddr+1
+			sta ptr+1
     		sta UDIOMemPtrH,x
-		jsr rdlng
+			jsr rdlng
 
 quitpkt:
-		lda len
-		ldx len+1
-		clc
-		rts
+			lda len
+			ldx len+1
+			clc
+			rts
 
 
 ;---------------------------------------------------------------------
@@ -224,42 +222,40 @@ send:
 	        lda bufaddr+1
 	        sta ptr+1
 	        jsr wrlng	; send the packet
-	        lda UDIOCmdNetStatus,x	; read the result
+	        lda UDIOStatus,x	; read the result
 	        beq sendnoerr
 	        sec
 	        rts
 sendnoerr:
-                clc
-	        rts
-
-exit:           rts
+            clc
+exit:		rts
 GETMAC:
-                ldy #0
+            ldy #0
 .1:
-                lda UDIORData,X
-                sta mac,y
-                iny
-                cmp #$6
-                bne .1
-                rts 
+            lda UDIORData,X
+            sta mac,y
+            iny
+            cmp #$6
+            bne .1
+            rts 
 
 IOExecA:		
-                ldx csx
-                sta UDIOCmd,x
+            ldx csx
+            sta UDIOCmd,x
 IOExec:			
                 
-		lda UDIOExec,x
+			lda UDIOExec,x
 
-.1		lda UDIOStatus,x
-		bmi .1
-		lsr	; CS if error, A = ERROR CODE ?
-		rts
+.1			lda UDIOStatus,x
+			bmi .1
+			lsr	; CS if error, A = ERROR CODE ?
+			rts
 ;---------------------------------------------------------------------
 ; Write data to the Udrive (256 bytes or less)
 
-wrtpg:          ldy #0
-wrtpg2:         lda (ptr),y    ; get a byte
-                sta UDIOWData,x     ; send it to the Udrive
+wrtpg:      ldy #0
+wrtpg2:     lda (ptr),y    ; get a byte
+            sta UDIOWData,x     ; send it to the Udrive
 	        iny	               ; increment to next byte
 	        dex                ; decrease countdown
 	        bne	wrtpg2         ; keep copying while x > 0
@@ -277,13 +273,13 @@ wrlng2:ldx #0
 	        inc ptr+1          ; increment to next page
 	        dec len+1          ; decrease count by 256 bytes
 	        bne wrlng2
-wrlng3:         ldx len
+wrlng3:     ldx len
 	        beq wrlng4
 	        jsr wrtpg
 wrlng4:
-                lda UDIOCmdNetSend,x
-                jsr IOExecA
-                pla
+            lda #UDIOCmdNetSend
+            jsr IOExecA
+            pla
 	        sta len+1
 	        pla
 	        sta ptr+1
@@ -292,9 +288,9 @@ wrlng4:
 ; Read data from the Udrive (256 bytes or less)
 rdpg:   
 
-                ldy #0
+            ldy #0
 .1:
-                lda UDIORData,x         ; get the byte
+            lda UDIORData,x         ; get the byte
 	        sta (ptr),y
 	        iny
 	        dex
@@ -304,7 +300,7 @@ rdpg:
 ;--------------------------------------------------------------------
 ; Read data from the Udrive in Polling mode (len number of bytes)
 rdlng:
-                lda UDIOCmdNetRcvd
+            lda #UDIOCmdNetRcvd
 		jsr IOExecA
 	        lda ptr+1          ; save ptr+1
 	        pha
@@ -312,17 +308,17 @@ rdlng:
 	        pha
 	        beq rdlng3
 rdlng2:	
-                ldx #0
+            ldx #0
 	        jsr rdpg
 	        inc ptr+1          ; increment to next page
 	        dec len+1          ; decrease count by 256 bytes
 	        bne rdlng2
 rdlng3: 
-                ldx len
+            ldx len
 	        beq rdlng4
 	        jsr rdpg
 rdlng4: 
-                pla
+            pla
 	        sta len+1
 	        pla
 	        sta ptr+1
