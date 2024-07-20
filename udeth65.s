@@ -210,6 +210,7 @@ send:
 	        ; Save data length
 	        sta len
 	        stx len+1
+			ldx csx
 	        lda UDIOStatus,x ; Reset Write Buffer
 	        lda len
 	        sta UDIOWData,x	; write length to UD Buffer
@@ -220,8 +221,8 @@ send:
 	        lda bufaddr+1
 	        sta ptr+1
 	        jsr wrlng	; send the packet
-	        lda UDIOStatus,x
-			bmi .1
+.w:	        lda UDIOStatus,x
+			bmi .w
 			lsr	; CS if error, A = ERROR CODE ?
 exit:		rts
 GETMAC:
@@ -287,6 +288,7 @@ rdpg:
             lda UDIORData,x         ; get the byte
 	        sta (ptr),y
 	        iny
+	        dec tmp
 	        bne .1
 	        rts
 
@@ -302,12 +304,14 @@ rdlng:
 	        beq rdlng3
 rdlng2:	
             ldx #0
+            stx tmp
 	        jsr rdpg
 	        inc ptr+1          ; increment to next page
 	        dec len+1          ; decrease count by 256 bytes
 	        bne rdlng2
 rdlng3: 
             ldx len
+            stx tmp
 	        beq rdlng4
 	        jsr rdpg
 rdlng4: 
