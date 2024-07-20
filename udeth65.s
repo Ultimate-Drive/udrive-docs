@@ -31,27 +31,27 @@
 ; Author: Phillip Allison  <ultimatedrive@apple2email.com>
 ;
 UDROMSignOfs		:= $EC	;				"UltimateDrive"
-UDROMVerOfs		    := $F9	;				MAX/MIN
+UDROMVerOfs		:= $F9	;				MAX/MIN
 
-UDIOExec			:= $C080 ;				Write
-UDIOStatus		    := $C081 ;				Read
-UDIOCmd			    := $C082 ;				Write
-UDIOCmdNetOpen	    := $70 ;
-UDIOCmdNetClose	    := $71 ;
-UDIOCmdNetSend	    := $72 ;
-UDIOCmdNetRcvd	    := $73 ;
-UDIOCmdNetPeek	    := $74 ;
-UDIOCmdNetStatus    := $75 ;
-UDIOCmdNetSDMA      := $76 ;	 			Send Frame Via DMA
-UDIOCmdNetRDMA      := $77 ;				Read Frame via DMA
-UDIOUnitNum		    := $C083 ;				Write
-UDIOMemPtrL		    := $C084 ;
-UDIOMemPtrH		    := $C085 ;
+UDIOExec		:= $C080 ;				Write
+UDIOStatus		:= $C081 ;				Read
+UDIOCmd			:= $C082 ;				Write
+UDIOCmdNetOpen	    	:= $70 ;
+UDIOCmdNetClose	    	:= $71 ;
+UDIOCmdNetSend	    	:= $72 ;
+UDIOCmdNetRcvd	    	:= $73 ;
+UDIOCmdNetPeek	    	:= $74 ;
+UDIOCmdNetStatus    	:= $75 ;
+UDIOCmdNetSDMA      	:= $76 ;	 			Send Frame Via DMA
+UDIOCmdNetRDMA      	:= $77 ;				Read Frame via DMA
+UDIOUnitNum		:= $C083 ;				Write
+UDIOMemPtrL		:= $C084 ;
+UDIOMemPtrH		:= $C085 ;
 UDIOBlockNum		:= $C086 ;				Write 4 bytes, BE
-UDIORData			:= $C087 ;				Read
-UDIOWData			:= $C088 ;				Write
-UDIODoDMA			:= $C089 ;				Write
-UDIOMode			:= $C08D ;				Read NZ = DMA, Write b7
+UDIORData		:= $C087 ;				Read
+UDIOWData		:= $C088 ;				Write
+UDIODoDMA		:= $C089 ;				Write
+UDIOMode		:= $C08D ;				Read NZ = DMA, Write b7
 
 
 
@@ -74,10 +74,10 @@ bufaddr:.res	2		; Address
 bufsize:.res	2		; Size
 
 	; Jump table.
-	jmp init
-	jmp poll
-	jmp send
-	jmp exit
+		jmp init
+		jmp poll
+		jmp send
+		jmp exit
 
 ;---------------------------------------------------------------------
 
@@ -121,32 +121,32 @@ init:
 				lda #UDROMSignOfs
 				sta tpa
                 lda #$C7
-1:				sta tpa+1
+.1:				sta tpa+1
 				ldy #ROMSIGL-1
-10:				lda (tpa),y
+.10:				lda (tpa),y
 				cmp ROMSIG,y
-				bne	2
+				bne	.2
 				dey
-				bpl 10 ; Still matching RomSig
-				bra 3 ; Found if we reached the end, no mismatch
-2:				lda tpa+1
-				dec
-				cmp #$C0
-				bne 1
-				lda #$21
-				sec
-.99				rts
+		bpl .10 ; Still matching RomSig
+		bra .3 ; Found if we reached the end, no mismatch
+.2:		lda tpa+1
+		dec
+		cmp #$C0
+		bne .1
+		lda #$21
+		sec
+.99		rts
 *--------------------------------------
-.3				asl ; We found a Udrive Lets store the card slot
+.3		asl ; We found a Udrive Lets store the card slot
                 asl
                 asl
                 asl
                 sta csx ; ($C7 becomes $C|7 << 4 == $70)
                 tax ; We need the slot number in X  << 4;)
-*				jsr sendinit
+*		jsr sendinit
                 beq .9
                 jsr GETMAC ; Store Mac Address in 'mac'
-.9				rts ; Wee... Init / Open is done! We are in MACRAW mode
+.9		rts ; Wee... Init / Open is done! We are in MACRAW mode
 	
 
 	.endif
@@ -155,82 +155,82 @@ init:
 
 
 sendinit:
-	lda csx
-    tax
-    lda UDIOCmdNetOpen ; Open Command
-    jsr IOExecA
-	rts
-initer: sec
-	rts
+		lda csx
+    		tax
+    		lda UDIOCmdNetOpen ; Open Command
+    		jmp IOExecA ; rts performed by the called routine
+initer: 
+		sec
+		rts
 
 ;---------------------------------------------------------------------
 
 poll:
-    lda csx
-    tax
-	lda #$UDIOCmdNetPeek
-    jsr IOExecA
-    lda UDIORData,x 
-	sta	len
-	lda UDIORData,x 
-    sta len+1
-	lda len+1
-	bne ispacket
-	lda len
-	bne ispacket
+    		lda csx
+    		tax
+		lda #$UDIOCmdNetPeek
+    		jsr IOExecA
+    		lda UDIORData,x 
+		sta	len
+		lda UDIORData,x 
+    		sta len+1
+		lda len+1
+		bne ispacket
+		lda len
+		bne ispacket
 nopacket:
-	lda #$00	; register no packet
-	tax
-	sec
-	rts
+		lda #$00	; register no packet
+		tax
+		sec
+		rts
 
 ispacket:
 ; Is bufsize < length ?
-	lda bufsize
-	cmp len
-	lda bufsize+1
-	sbc len+1
-	bcc nopacket   ; this should not happen....
+		lda bufsize
+		cmp len
+		lda bufsize+1
+		sbc len+1
+		bcc nopacket   ; this should not happen....
 
 recvpacket:
-	lda bufaddr
-	sta ptr
-    sta UDIOMemPtrL,x
-	lda bufaddr+1
-	sta ptr+1
-    sta UDIOMemPtrH,x
-	jsr rdlng
+		lda bufaddr
+		sta ptr
+    		sta UDIOMemPtrL,x
+		lda bufaddr+1
+		sta ptr+1
+    		sta UDIOMemPtrH,x
+		jsr rdlng
 
 quitpkt:
-	lda len
-	ldx len+1
-	clc
-	rts
+		lda len
+		ldx len+1
+		clc
+		rts
 
 
 ;---------------------------------------------------------------------
 
 send:
-	            ; Save data length
-	            sta len
-	            stx len+1
-	            lda UDIOStatus,x ; Reset Write Buffer
-	            lda len
-	            sta UDIOWData,x	; write length to UD Buffer
-	            lda len+1
-	            sta UDIOWData,x    ; MSB of len 
-	            lda bufaddr
-	            sta ptr
-	            lda bufaddr+1
-	            sta ptr+1
-	            jsr wrlng	; send the packet
-	            lda UDIOCmdNetStatus,x	; read the result
-	            beq sendnoerr
-	            sec
-	            rts
+	        ; Save data length
+	        sta len
+	        stx len+1
+	        lda UDIOStatus,x ; Reset Write Buffer
+	        lda len
+	        sta UDIOWData,x	; write length to UD Buffer
+	        lda len+1
+	        sta UDIOWData,x    ; MSB of len 
+	        lda bufaddr
+	        sta ptr
+	        lda bufaddr+1
+	        sta ptr+1
+	        jsr wrlng	; send the packet
+	        lda UDIOCmdNetStatus,x	; read the result
+	        beq sendnoerr
+	        sec
+	        rts
 sendnoerr:
                 clc
-	            rts
+	        rts
 
 exit:           rts
 GETMAC:
@@ -248,46 +248,46 @@ IOExecA:
                 sta UDIOCmd,x
 IOExec:			
                 
-				lda UDIOExec,x
+		lda UDIOExec,x
 
-.1				lda UDIOStatus,x
-				bmi .1
-				lsr						CS if error, A = ERROR CODE ?
-				rts
+.1		lda UDIOStatus,x
+		bmi .1
+		lsr	; CS if error, A = ERROR CODE ?
+		rts
 ;---------------------------------------------------------------------
 ; Write data to the Udrive (256 bytes or less)
 
 wrtpg:          ldy #0
 wrtpg2:         lda (ptr),y    ; get a byte
                 sta UDIOWData,x     ; send it to the Udrive
-	            iny	               ; increment to next byte
-	            dex                ; decrease countdown
-	            bne	wrtpg2         ; keep copying while x > 0
-	            rts
+	        iny	               ; increment to next byte
+	        dex                ; decrease countdown
+	        bne	wrtpg2         ; keep copying while x > 0
+	        rts
 ;--------------------------------------------------------------------
 ; Write data to the Udrive in Polling Mode (len number of bytes)
 wrlng:
-	            lda ptr+1          ; save ptr+1
-	            pha
-	            lda len+1
-	            pha
-	            beq wrlng3
+	        lda ptr+1          ; save ptr+1
+	        pha
+	        lda len+1
+	        pha
+	        beq wrlng3
 wrlng2:ldx #0
-	            jsr wrtpg
-	            inc ptr+1          ; increment to next page
-	            dec len+1          ; decrease count by 256 bytes
-	            bne wrlng2
+	        jsr wrtpg
+	        inc ptr+1          ; increment to next page
+	        dec len+1          ; decrease count by 256 bytes
+	        bne wrlng2
 wrlng3:         ldx len
-	            beq wrlng4
-	            jsr wrtpg
+	        beq wrlng4
+	        jsr wrtpg
 wrlng4:
                 lda UDIOCmdNetSend,x
                 jsr IOExecA
                 pla
-	            sta len+1
-	            pla
-	            sta ptr+1
-	            rts
+	        sta len+1
+	        pla
+	        sta ptr+1
+	        rts
 ;---------------------------------------------------------------------
 ; Read data from the Udrive (256 bytes or less)
 rdpg:   
@@ -295,37 +295,37 @@ rdpg:
                 ldy #0
 .1:
                 lda UDIORData,x         ; get the byte
-	            sta (ptr),y
-	            iny
-	            dex
-	            bne .1
-	            rts
+	        sta (ptr),y
+	        iny
+	        dex
+	        bne .1
+	        rts
 
 ;--------------------------------------------------------------------
 ; Read data from the Udrive in Polling mode (len number of bytes)
 rdlng:
                 lda UDIOCmdNetRcvd
-                jsr IOExecA
-	            lda ptr+1          ; save ptr+1
-	            pha
-	            lda len+1
-	            pha
-	            beq rdlng3
+		jsr IOExecA
+	        lda ptr+1          ; save ptr+1
+	        pha
+	        lda len+1
+	        pha
+	        beq rdlng3
 rdlng2:	
                 ldx #0
-	            jsr rdpg
-	            inc ptr+1          ; increment to next page
-	            dec len+1          ; decrease count by 256 bytes
-	            bne rdlng2
+	        jsr rdpg
+	        inc ptr+1          ; increment to next page
+	        dec len+1          ; decrease count by 256 bytes
+	        bne rdlng2
 rdlng3: 
                 ldx len
-	            beq rdlng4
-	            jsr rdpg
+	        beq rdlng4
+	        jsr rdpg
 rdlng4: 
                 pla
-	            sta len+1
-	            pla
-	            sta	ptr+1
-	            rts
+	        sta len+1
+	        pla
+	        sta ptr+1
+	        rts
 
 ;---------------------------------------------------------------------
