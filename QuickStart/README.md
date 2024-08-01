@@ -21,7 +21,17 @@ Format your card with a FAT filesystem like FAT32 or exFAT.
 
 ## Card Installation
 
-After formatting your SD card and installing it on the UltimateDrive card.  Install the card in your Apple II system with the SD card slot side point toward the front/keyboard of your system.
+After formatting your SD card and installing it in the UltimateDrive card.  Install the card in your Apple II system with the SD card slot side point toward the front/keyboard of your system.
 
-/QuickStart/assets/installcard.png
 ![Image showing the card with arrows indicating the longer sdcard slot side oriented to the front of the Apple 2 with the short / networking side oriented to the back of the case.](/QuickStart/assets/cardinstall00.png)
+
+### Card Slot
+
+The slot you chose may affect speeds and DMA capability.  [NEED MORE INFO]
+
+On the Apple IIgs you may need to enter the Control Panel and set the slot to "Your Card" if using slots 5-7.  [CONFIRM]
+
+## Setting up your drive images
+When the Apple II is booting press `M` to enter the UltimateDrive configuration menu. 
+
+From there, you can add disk images in DOS or ProDos format (typically `.dsk` or `.po` files) that you've copied to the SD cards as mounted volumes and then boot them up like any real drive!
