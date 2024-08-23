@@ -34,4 +34,10 @@ On the Apple IIgs you may need to enter the Control Panel and set the slot to "Y
 ## Setting up your drive images
 When the Apple II is booting press `M` to enter the UltimateDrive configuration menu. 
 
-From there, you can add disk images in DOS or ProDos format (typically `.dsk` or `.po` files) that you've copied to the SD cards as mounted volumes and then boot them up like any real drive!
+From there, you can view and mount your disk images in DOS or ProDos format.  
+
+### Hard disk images supported:
+PO, HDV, IMG, 2MG, S2E
+
+### Disk II images supported:
+S2E, NIB, DSK, PO
