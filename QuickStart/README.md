@@ -9,7 +9,7 @@ This is intended for those who are already familiar with their Apple II and peri
 - Apple IIgs
 - Apple ///
 
-\* Features may be limited for certain models (DMA, Wifi speeds...)
+\* Features may be limited for certain models (DMA, Ethernet speeds...)
 
 ## Card Storage
 
