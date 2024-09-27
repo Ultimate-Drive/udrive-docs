@@ -1,4 +1,5 @@
-baseURL = ''
+#baseURL = 'https://ultimate-drive.github.io/udrive-docs/'
+baseURL = "https://ultimate-drive.github.io/udrive-docs/"
 languageCode = 'en-us'
 title = 'UltimateDrive Documentation'
 theme = "hugo-book"
