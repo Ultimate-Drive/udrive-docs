@@ -9,7 +9,7 @@ Before you install the UltimateDrive, ensure that your Apple II system is powere
 Choose an available expansion slot and insert the card using even pressure on both ends to avoid inserting it at an angle. 
 
 Make sure that the card is positioned so the MicroSD card slot is facing the front of the computer.
-![Image showing the card with arrows indicating the longer side (with the sdcard slot) oriented to the front of the Apple 2 with the short / networking side oriented to the back of the case.](/img/cardinstall00.png)
+![Image showing the card with arrows indicating the longer side (with the sdcard slot) oriented to the front of the Apple 2 with the short / networking side oriented to the back of the case.](/udrive-docs//img/cardinstall00.png)
 
 ### Slots and Disk II support
 
@@ -24,7 +24,7 @@ The Apple IIgs has a number of built-in devices which use virtual slots.  These 
 To make sure your slot is configured correctly for UltimateDrive, enter the Control Panel with the keypress combination `OpenApple-Ctrl-Esc`.  
 
 Then navigate to _Control Panel -> Slots_ and verify the slot you are using is set to "Your Card". 
-![The Apple IIgs Control Panel showing the Slots configuration](/img/iigs-control-panel-slots.png)
+![The Apple IIgs Control Panel showing the Slots configuration](/udrive-docs//img/iigs-control-panel-slots.png)
 
 NOTE: This may need to be done for Virtual Disk II slot as well??? @todo
 
