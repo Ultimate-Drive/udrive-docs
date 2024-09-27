@@ -1,0 +1,72 @@
+baseURL = 'https://foo.org/'
+languageCode = 'en-us'
+title = 'UltimateDrive Documentation'
+theme = "hugo-book"
+enableGitInfo = true
+[menu]
+
+
+  [[menu.after]]
+  name = "Github"
+  url = "https://github.com/Ultimate-Drive/udrive-docs"
+  weight = 10
+
+  [[menu.main]]
+    identifier = "quickstart"
+    name = "QuickStart"
+    url = "/quickstart/"
+    weight = 1
+
+  [[menu.main]]
+    identifier = "user-guide"
+    name = "User Guide"
+    url = "/user-guide/"
+    weight = 2
+
+  [[menu.main]]
+    parent = "user-guide"
+    name = "Installation"
+    url = "/user-guide/installation/"
+    weight = 1
+
+  [[menu.main]]
+    parent = "user-guide"
+    name = "Disk Images"
+    url = "/user-guide/disk-images/"
+    weight = 2
+
+  [[menu.main]]
+    parent = "user-guide"
+    name = "Navigating the Menus"
+    url = "/user-guide/navigating-the-menus/"
+    weight = 3
+
+  [[menu.main]]
+    parent = "user-guide"
+    name = "Networking"
+    url = "/user-guide/networking/"
+    weight = 4
+
+  [[menu.main]]
+    identifier = "technical-reference"
+    name = "Technical Reference"
+    url = "/technical-reference/"
+    weight = 3
+
+  [[menu.main]]
+    parent = "technical-reference"
+    name = "Specifications"
+    url = "/technical-reference/specifications/"
+    weight = 1
+
+  [[menu.main]]
+    parent = "technical-reference"
+    name = "API Reference"
+    url = "/technical-reference/api-reference/"
+    weight = 2
+
+
+[params]
+  #BookSection = 'docs'
+  #BookRepo = 'https://github.com/Ultimate-Drive/udrive-docs'
+  #BookEditPath = 'edit/main/manual-website'
