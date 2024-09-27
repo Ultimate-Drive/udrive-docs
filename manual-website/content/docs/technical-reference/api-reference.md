@@ -52,7 +52,7 @@ Slot_n0         db $50              ; Hardcoding slot 5 for demonstration purpos
 ### API Command Reference
 
 | Command Name     | Number | Description |
-| ---------------- | ------ | ---------------------------------------------------------------------------------------------------------- |
+| ---------------- | :----: | ---------------------------------------------------------------------------------------------------------- |
 |`IO_CMD_GetCD`    | `$22`  | DiskBuffer holds the PWD, UnitNum is for which drive, 00 terminated, Floppy 1 and 2 are image #$21 and $22 |
 |`IO_CMD_SetCD`    | `$23`  | DiskBuffer sets the PWD, UnitNum is for which drive, 00 terminated, Floppy 1 and 2 are image #$21 and $22  |
 |`IO_CMD_GetFile`  | `$26`  | returns the filename of UnitNum in DiskBuffer, Floppies are $21 and $22                                    |

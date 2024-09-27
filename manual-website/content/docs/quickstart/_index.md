@@ -31,7 +31,7 @@ Format your card with a FAT filesystem like FAT32 or exFAT.
 
 After formatting your Micro SD card and inserting it in the UltimateDrive.  Install the UltimateDrive in your Apple II system with the Micro SD card slot side pointed toward the front/keyboard of your system.
 
-![Image showing the card with arrows indicating the longer side (with the sdcard slot) oriented to the front of the Apple 2 with the short / networking side oriented to the back of the case.](/img/cardinstall00.png)
+![Image showing the card with arrows indicating the longer side (with the sdcard slot) oriented to the front of the Apple 2 with the short / networking side oriented to the back of the case.]({{ "img/cardinstall00.png" | relURL }})
 
 ### Card Slot
 
