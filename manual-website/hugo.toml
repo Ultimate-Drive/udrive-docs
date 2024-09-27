@@ -1,4 +1,4 @@
-baseURL = 'https://foo.org/'
+baseURL = 'https://ultimate-drive.github.io/'
 languageCode = 'en-us'
 title = 'UltimateDrive Documentation'
 theme = "hugo-book"
