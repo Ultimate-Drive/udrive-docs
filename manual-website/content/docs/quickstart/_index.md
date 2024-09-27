@@ -35,9 +35,9 @@ After formatting your Micro SD card and inserting it in the UltimateDrive.  Inst
 
 ### Card Slot
 
-The slot you chose may affect speeds and DMA capability.  [NEED MORE INFO]
+The slot you chose may affect speeds and DMA capability.  @todo [NEED MORE INFO]
 
-On the Apple IIgs you may need to enter the Control Panel and set the slot to "Your Card" if using slots 5-7.  [CONFIRM]
+On the Apple IIgs you may need to enter the Control Panel and set the slot to "Your Card" if using slots 5-7.  @todo [CONFIRM]
 
 ## Setting up your drive images
 Press the `M` key when the Apple II is booting to enter the UltimateDrive configuration menu. 

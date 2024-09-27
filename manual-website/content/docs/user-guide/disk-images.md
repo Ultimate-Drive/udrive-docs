@@ -40,11 +40,6 @@ Cadius (CLI-tool) to manage Apple II image files
 
 http://www.brutaldeluxe.fr/products/crossdevtools/cadius/index.html
 
-### Cadius
-Cadius (CLI-tool) to manage Apple II image files
-
-http://www.brutaldeluxe.fr/products/crossdevtools/cadius/index.html
-
 ### CiderPress II
 CiderPress II (Desktop) is a software tool for working with vintage Apple software
 
