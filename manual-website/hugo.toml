@@ -68,5 +68,5 @@ enableGitInfo = true
 
 [params]
   #BookSection = 'docs'
-  #BookRepo = 'https://github.com/Ultimate-Drive/udrive-docs'
-  #BookEditPath = 'edit/main/manual-website'
+  BookRepo = 'https://github.com/Ultimate-Drive/udrive-docs'
+  BookEditPath = 'edit/main/manual-website'
