@@ -40,4 +40,4 @@ From there, you can view and mount your disk images in DOS or ProDos format.
 PO, HDV, IMG, 2MG, S2E
 
 ### Disk II images supported:
-S2E, NIB, DSK, PO
+S2E, NIB, DSK, PO, WOZ
